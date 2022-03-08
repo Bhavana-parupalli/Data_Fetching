@@ -1,3 +1,4 @@
+# .github/workflows/app.yaml
 name: PyTest
 on: push
 
@@ -23,7 +24,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.local/share/virtualenvs
-          key: $-pipenv-$
+          key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
 
       - name: Install dependencies
         if: steps.cache-pipenv.outputs.cache-hit != 'true'
