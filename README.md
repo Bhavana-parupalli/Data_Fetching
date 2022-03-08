@@ -129,8 +129,67 @@ db = project0.createdb()
 project0.populatedb(db, incidents)
 project0.status(db)
 ``` 
-### Execution
-After connecting to the instance using SSH in linux clone the repository, give the following command. Therefore, it will fetch the incidents from the url and stores in a 'normanpd.db' and prints the output.
+### project0 execution
+After connecting to the instance using SSH.
+
+Clone the repository: https://github.com/Bhavana-parupalli/cs5293sp22-project0
+
+Give the following command in command line.
 ```bash
 pipenv run python project0/main.py --incidents <url>
+```
+## tests
+### test_1.py
+The test_1.py contains different test cases to test the functions present inside the project0.py. The test_1.py returns the passed and failed test cases.
+#### test1_fetchincidents()
+The test1_fetchincidents function passes the url to the fetchincidents function which is present inside the project0.py and gets the bytes data from the url. If the data is fetched then test1_fetchincidents() test case is passed else failed. The commands are as follows.
+```bash
+data=project0.fetchincidents(url)
+assert data!=None
+```
+#### test1_extractincidents()
+The test1_extractincidents function passes the url to the fetchincidents() and the fetched data is passed as an argument to the extractincidents function in project0.py and extracts the list of incidents. If length of extracted list is greater than 0, test case will pass else fail.
+```bash
+data=project0.fetchincidents(url)
+incidents=project0.extractincidents(data)
+assert len(incidents)>0
+```
+#### test1_createdb()
+The test1_createdb function calls the createdb() from the project0.py. The createdb() from project0.py returns 'normanpd.db'. The test1_createdb() compares the string returned from the project0.py with 'normanpd.db'. If both are similar then test case pass else fail. The commands are mentioned below.
+```bash
+db='normanpd.db'
+dbase=project0.createdb()
+assert dbase==db
+```
+#### test1_populatedb()
+The test1_populatedb function passes the url to the fetchincidents() and the data returned from the funtion is passed as an argument to the extractincidents() in project0.py. Followed by, using createdb() datbase 'normanpd.db' is created. The incidents extracted from extractincidents() and 'normanpd.db' are passed as an argument to the populatedb(). The populatedb() will insert all the rows into the database. The commands are as follow.
+```bash
+data = project0.fetchincidents(url)
+incidents=project0.extractincidents(data)
+datab=project0.createdb()
+db=project0.createdb()
+project0.populatedb(datab,incidents)
+s=sqlite3.connect(db)
+cur=s.cursor()
+cur.execute('''select *
+                from incidents''')
+assert cur.fetchall()!=0
+```
+#### test1_status()
+The test1_status function will perfom same as test1_populatedb() additionally it selects the nature and it's count in descending order as shown below.
+```bash
+cur.execute('''select nature, count(nature)
+                from incidents
+                group by nature
+                order by count(nature) desc''')
+assert cur.fetchall()!=0
+```
+### Test cases execution
+After connecting to the instance using SSH.
+
+clone the repository: git clone https://github.com/Bhavana-parupalli/cs5293sp22-project0
+
+Finally, run the below command in command line
+```bash
+pipenv run pytest
 ```
