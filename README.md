@@ -1,6 +1,5 @@
 # cs5293sp22-project0
-## Author: Bhavana Parupalli
-## Email: parupallibhavana123@ou.edu  
+## Author: Bhavana Parupalli 
 ## Packages installed
 ```bash
   pipenv install PyPDF2
